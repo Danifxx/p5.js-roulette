@@ -1,4 +1,4 @@
-
+var playing = false;
 
 var holding = false;
 
@@ -35,6 +35,25 @@ function touchStarted(){
 
 function touchEnded(){
     mouseReleased();
+}
+
+function start(){
+    if(!playing){
+        playing = true;
+        $('#stop').css('display', 'inline-block');
+        $('#start').css('display', 'none');
+    }
+}
+
+function stop(){
+    $('#start').css('display', 'inline-block');
+    $('#stop').css('display', 'none');
+}
+
+function reset(){
+    playing = false;
+    $('#start').css('display', 'inline-block');
+    $('#stop').css('display', 'none');
 }
 
 function draw(){
