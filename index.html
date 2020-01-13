@@ -7,6 +7,11 @@
 </head>
 <body>
     <h1>WEBルーレット</h1>
+    
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
     <script src="./p5.min.js"></script>
     <script src="./app.js"></script>
     <style>
@@ -17,31 +22,42 @@
     }
     </style>
     <div id="canvas"></div>
+    <button type="button" id="reset" onclick="reset()">リセット</button>
     <button type="button" id="start" onclick="start()">スタート！</button>
     <button type="button" id="stop" onclick="stop()" style="display:none;">ストップ！</button>
-    <button type="button" id="reset" onclick="reset()">リセット</button>
+
+    <h2>結果</h2>
+    <p id="result">????</p>
+
     <div>
         <h2>ルーレット設定</h2>
         <div>
             <h3>項目名と割合</h3>
             <button type="button" class="add">追加</button>
             <table id="table">
-                <tr><th>項目名</th><th>割合</th><th>確率</th><th>削除</th></tr>
-                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
-                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
-                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
-                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
-                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
-                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
+                <tr><th>色</th><th>項目名</th><th>割合</th><th>確率</th><th>削除</th></tr>
+                <tr class="item"><td><div class="color-indicator" style="background-color:#000000;"></div></td><td><input type="text" class="name" value="項目A"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
+                <tr class="item"><td><div class="color-indicator" style="background-color:#000000;"></div></td><td><input type="text" class="name" value="項目B"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
+                <tr class="item"><td><div class="color-indicator" style="background-color:#000000;"></div></td><td><input type="text" class="name" value="項目C"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
+                <tr class="item"><td><div class="color-indicator" style="background-color:#000000;"></div></td><td><input type="text" class="name" value="項目D"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
+                <tr class="item"><td><div class="color-indicator" style="background-color:#000000;"></div></td><td><input type="text" class="name" value="項目E"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
+                <tr class="item"><td><div class="color-indicator" style="background-color:#000000;"></div></td><td><input type="text" class="name" value="項目F"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>
             </table>
             <button type="button" class="add">追加</button>
         </div>
     </div>
 
-    <script
-    src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-    crossorigin="anonymous"></script>
+    <style>
+    .color-indicator{
+        width: 10px;
+        height: 10px;
+    }
+    #result{
+        font-size: 40px;
+        font-weight: bold;
+    }
+    </style>
+
     <script>
         function recalculate(){
             var ratioSumJs = 0;
@@ -56,18 +72,28 @@
             });
         }
         $('.add').click(function(){
-            var add = '<tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>';
+            var add = '<tr class="item"><td><div class="color-indicator" style="background-color:#000000;"></div></td><td><input type="text" class="name" value="項目"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td><td><button type="button" onclick="rmItem(this)">削除</button></td></tr>';
             $('#table').append(add);
             recalculate();
+            if(mode==Mode.waiting){
+                dataFetch();
+            }
         });
         function rmItem(e){
-            $(e).parent().parent().remove();
-            recalculate();
+            if($('.ratio').length>2){
+                $(e).parent().parent().remove();
+                recalculate();
+            }
+            if(mode==Mode.waiting){
+                dataFetch();
+            }
         }
-        $('.ratio').change(function(){
+        $('div').on('change', '.ratio', function(){
             recalculate();
+            if(mode==Mode.waiting){
+                dataFetch();
+            }
         });
-        recalculate();
     </script>
 </body>
 </html>
