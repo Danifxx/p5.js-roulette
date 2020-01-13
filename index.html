@@ -6,6 +6,8 @@
     <title>p5.js</title>
 </head>
 <body>
+    <h1>WEBルーレット</h1>
+
     <script src="./p5.min.js"></script>
     <script src="./app.js"></script>
     <style>
@@ -15,5 +17,60 @@
         height: auto !important;
     }
     </style>
+    <div id="canvas"></div>
+    <button type="button" id="start">スタート！</button>
+    <button type="button" id="stop">ストップ！</button>
+    <button type="button" id="reset">リセット</button>
+    <div>
+        <h2>ルーレット設定</h2>
+        <div>
+            <h3>項目名と割合</h3>
+            <button type="button" class="add">追加</button>
+            <button type="button" class="remove">削除</button>
+            <table id="table">
+                <tr><th>項目名</th><th>割合</th><th>確率</th></tr>
+                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td></tr>
+                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td></tr>
+                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td></tr>
+                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td></tr>
+                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td></tr>
+                <tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td></tr>
+            </table>
+            <button type="button" class="add">追加</button>
+            <button type="button" class="remove">削除</button>
+        </div>
+    </div>
+
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+    <script>
+        function recalculate(){
+            var ratioSum = 0;
+            $('.ratio').each(function(){
+                ratioSum += $(this).val()-0;
+            });
+            $(".item").each(function(){
+                var probability = ($(this).find(".ratio").first().val()-0) / ratioSum;
+                probability*=100;
+                probability = probability.toFixed(3);
+                $(this).children(".probability").first().html(probability+"%");
+            });
+        }
+        $('.add').click(function(){
+            var add = '<tr class="item"><td><input type="text" class="name"></td><td><input type="number" class="ratio" value="1"></td><td class="probability"></td></tr>';
+            $('#table').append(add);
+            recalculate();
+        });
+        $('.remove').click(function(){
+            $('#table tr.item:last').remove();
+            recalculate();
+        });
+        $('.ratio').change(function(){
+            recalculate();
+        });
+        recalculate();
+    </script>
 </body>
 </html>

@@ -11,7 +11,8 @@ function preload(){
 }
 
 function setup(){
-    createCanvas(600,300);
+    var canvas = createCanvas(600,300);
+    canvas.parent('canvas');
     textSize(20);
     stroke(0,0,0);
     fill(0,0,0);
