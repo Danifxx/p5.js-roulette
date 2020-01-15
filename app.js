@@ -99,7 +99,6 @@ function dataFetch(){
         colors.push(Math.floor(255/len*i));
     }
     colorList = [];
-    console.log(colorList);
     if(len%2==0){
         for(var i=0;i<len;i+=2){
             colorList[i] = colors[Math.floor(i/2)];
