@@ -88,7 +88,7 @@
                 dataFetch();
             }
         }
-        $('div').on('change', '.ratio', function(){
+        $('#table').on('change', '.ratio', function(){
             recalculate();
             if(mode==Mode.waiting){
                 dataFetch();

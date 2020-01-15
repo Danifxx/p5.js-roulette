@@ -149,7 +149,8 @@ function start(){
 }
 
 function stop(){
-    if(mode==Mode.acceleration || mode==Mode.constant){
+    if(//mode==Mode.acceleration || //加速中でもストップボタンを効かせるにはコメントアウト
+       mode==Mode.constant){
         $('#start').css('display', 'none');
         $('#stop').css('display', 'none');
         mode = Mode.deceleration;
