@@ -67,7 +67,7 @@ function touchEnded(){
 //set color indicator
 function cssColorSet(){
     var counter = 0;
-    $('.color-indicator').each(function(){+
+    $('.color-indicator').each(function(){
         push();
         colorMode(HSL, 255);
         var c = color(colorList[counter],255-COLOR_ADJ*colorList[counter],128);
