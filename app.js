@@ -99,6 +99,7 @@ function dataFetch(){
         colors.push(Math.floor(255/len*i));
     }
     colorList = [];
+    console.log(colorList);
     if(len%2==0){
         for(var i=0;i<len;i+=2){
             colorList[i] = colors[Math.floor(i/2)];
@@ -195,25 +196,22 @@ function draw(){
 
     switch(mode){
     case Mode.waiting:
-        rotate(theta);
-        drawRoulette();
         break;
     case Mode.acceleration:
         if(speed<MAX_SPEED){
             speed += ACCEL;
         }else{
             mode = Mode.constant;
+            speed = MAX_SPEED;
         }
         theta += speed;
         theta-=(Math.floor(theta/2/PI))*2*PI;
         rotate(theta);
-        drawRoulette();
         break;
     case Mode.constant:
         theta += speed;
         theta-=(Math.floor(theta/2/PI))*2*PI;
         rotate(theta);
-        drawRoulette();
         break;
     case Mode.deceleration:
         if(speed>DECEL){
@@ -225,11 +223,9 @@ function draw(){
         theta += speed;
         theta-=(Math.floor(theta/2/PI))*2*PI;
         rotate(theta);
-        drawRoulette();
         break;
     case Mode.result:
         rotate(theta);
-        drawRoulette();
         if(!resultDisplayed){
             resultDisplayed = true;
             var angleSum = theta;
@@ -247,4 +243,5 @@ function draw(){
         }
         break;
     }
+    drawRoulette();
 }
